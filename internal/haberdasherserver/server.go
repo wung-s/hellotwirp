@@ -6,6 +6,7 @@ import (
 
 	"github.com/twitchtv/twirp"
 	pb "github.com/wung-s/hellotwirp/rpc/haberdasher"
+	hw "github.com/wung-s/hellotwirp/rpc/helloworld"
 )
 
 // Server implements the Haberdasher service
@@ -20,4 +21,8 @@ func (s *Server) MakeHat(ctx context.Context, size *pb.Size) (hat *pb.Hat, err e
 		Color:  []string{"white", "black", "brown", "red", "blue"}[rand.Intn(4)],
 		Name:   []string{"bowler", "baseball cap", "top hat", "derby"}[rand.Intn(3)],
 	}, nil
+}
+
+func (s *Server) Hello(ctx context.Context, resp *hw.HelloReq) (hat *hw.HelloResp, err error) {
+	return &hw.HelloResp{Text: "hello there !"}, nil
 }
