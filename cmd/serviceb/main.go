@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/wung-s/hellotwirp/internal/haberdasherserver"
+	"github.com/wung-s/hellotwirp/internal/server"
 	"github.com/wung-s/hellotwirp/rpc/haberdasher"
 	"github.com/wung-s/hellotwirp/rpc/helloworld"
 )
 
 func main() {
 	startClient()
-	server := &haberdasherserver.Server{} // implements Haberdasher interface
-	handler := haberdasher.NewHaberdasherServer(server)
-	fmt.Println("Starting Twirp Server on server/main...")
+	srv := &server.Server{} // implements Haberdasher interface
+	handler := haberdasher.NewHaberdasherServer(srv)
+	fmt.Println("Starting Twirp ServiceA...")
 	http.ListenAndServe(":8080", handler)
 }
 
@@ -29,7 +29,7 @@ func startClient() {
 				fmt.Printf("oh no: %v \n", err)
 				continue
 			}
-			fmt.Printf("I have a nice new hat: %+v", greeting)
+			fmt.Printf("Received response: %+v\n", greeting)
 		}
 	}()
 }

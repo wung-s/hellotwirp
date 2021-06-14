@@ -17,6 +17,4 @@ message Size {
 // A Hat is a piece of headwear made by a Haberdasher.
 message Hat {
   int32 inches = 1;
-  string color = 2; // anything but "invisible"
-  string name = 3; // i.e. "bowler"
 }

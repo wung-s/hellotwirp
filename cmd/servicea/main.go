@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/wung-s/hellotwirp/internal/haberdasherserver"
+	"github.com/wung-s/hellotwirp/internal/server"
 	"github.com/wung-s/hellotwirp/rpc/haberdasher"
 	"github.com/wung-s/hellotwirp/rpc/helloworld"
 )
@@ -16,13 +16,13 @@ func main() {
 		for {
 			time.Sleep(7 * time.Second)
 			client := haberdasher.NewHaberdasherProtobufClient("http://localhost:8080", &http.Client{})
-
-			hat, err := client.MakeHat(context.Background(), &haberdasher.Size{Inches: 12})
+			var size int32 = 12
+			resp, err := client.MakeHat(context.Background(), &haberdasher.Size{Inches: size})
 			if err != nil {
 				fmt.Printf("oh no: %v\n", err)
 				continue
 			}
-			fmt.Printf("I have a nice new hat: %+v\n", hat)
+			fmt.Printf("Sent: %v, responded with: %v \n", size, resp.Inches)
 		}
 	}()
 
@@ -30,9 +30,9 @@ func main() {
 }
 
 func startServer() {
-	server := &haberdasherserver.Server{} // implements Haberdasher interface
+	srv := &server.Server{} // implements Haberdasher interface
 
-	handler := helloworld.NewHelloWorldServer(server)
-	fmt.Println("Starting Twirp Server on client/main...")
+	handler := helloworld.NewHelloWorldServer(srv)
+	fmt.Println("Starting Twirp ServiceA...")
 	http.ListenAndServe(":8081", handler)
 }
