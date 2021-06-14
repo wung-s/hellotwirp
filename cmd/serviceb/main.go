@@ -15,14 +15,14 @@ func main() {
 	startClient()
 	srv := &server.Server{} // implements Haberdasher interface
 	handler := haberdasher.NewHaberdasherServer(srv)
-	fmt.Println("Starting Twirp ServiceA...")
+	fmt.Println("Starting Twirp ServiceB...")
 	http.ListenAndServe(":8080", handler)
 }
 
 func startClient() {
 	go func() {
 		for {
-			time.Sleep(7 * time.Second)
+			time.Sleep(3 * time.Second)
 			client := helloworld.NewHelloWorldProtobufClient("http://localhost:8081", &http.Client{})
 			greeting, err := client.Hello(context.Background(), &helloworld.HelloReq{Subject: "Testing..."})
 			if err != nil {
